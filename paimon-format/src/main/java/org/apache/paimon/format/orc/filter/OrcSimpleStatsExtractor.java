@@ -200,6 +200,9 @@ public class OrcSimpleStatsExtractor implements SimpleStatsExtractor {
             case FLOAT:
                 assertStatsClass(field, stats, DoubleColumnStatistics.class);
                 DoubleColumnStatistics floatStats = (DoubleColumnStatistics) stats;
+                if (Double.isNaN(floatStats.getSum())) {
+                    return new SimpleColStats(null, null, nullCount);
+                }
                 return new SimpleColStats(
                         (float) floatStats.getMinimum(),
                         (float) floatStats.getMaximum(),
@@ -207,6 +210,9 @@ public class OrcSimpleStatsExtractor implements SimpleStatsExtractor {
             case DOUBLE:
                 assertStatsClass(field, stats, DoubleColumnStatistics.class);
                 DoubleColumnStatistics doubleStats = (DoubleColumnStatistics) stats;
+                if (Double.isNaN(doubleStats.getSum())) {
+                    return new SimpleColStats(null, null, nullCount);
+                }
                 return new SimpleColStats(
                         doubleStats.getMinimum(), doubleStats.getMaximum(), nullCount);
             case DATE:
